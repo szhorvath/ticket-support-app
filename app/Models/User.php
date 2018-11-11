@@ -7,7 +7,7 @@ use App\Models\Model;
 class User extends Model
 {
     protected $hidden = [
-        'created_at',
+        'password',
     ];
 
     protected $dates = [
@@ -17,7 +17,7 @@ class User extends Model
 
     public function getFullNameOrUsername()
     {
-        return $this->getFullName() ?: $this->username;
+        return $this->getFullName()?: $this->username;
     }
 
     public function getFullName()

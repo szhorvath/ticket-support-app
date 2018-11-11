@@ -31,11 +31,17 @@ $container['config'] = function () {
     ];
 };
 
-$container['db'] = function ($c) {
+$container['fractal'] = function ($container) {
+    $manager = new \League\Fractal\Manager();
+    $manager->setSerializer(new \League\Fractal\Serializer\ArraySerializer());
+    return $manager;
+};
+
+$container['db'] = function ($container) {
     return new PDO(
-        $c->config['db_driver'] . ':host=' . $c->config['db_host'] . ';dbname=' . $c->config['db_name'],
-        $c->config['db_user'],
-        $c->config['db_pass']
+        $container->config['db_driver'] . ':host=' . $container->config['db_host'] . ';dbname=' . $container->config['db_name'],
+        $container->config['db_user'],
+        $container->config['db_pass']
     );
 };
 
