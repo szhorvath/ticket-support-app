@@ -15,4 +15,13 @@ class UserController extends Controller
 
         return $response->withJson($users);
     }
+
+    public function store(Request $request, Response $response)
+    {
+        var_dump($request->getParams());
+        die;
+        // $users = $this->db->query("SELECT * FROM users")->fetchAll(\PDO::FETCH_CLASS, User::class);
+
+        return $response->withJson($users);
+    }
 }

@@ -16,7 +16,7 @@ $app = new App\App;
 $container = $app->getContainer();
 
 $container['errorHandler'] = function () {
-    return function ($response) {
+    return function ($request, $response) {
         return $response->setBody('Page not found')->withStatus(404);
     };
 };
@@ -45,13 +45,10 @@ $container['db'] = function ($container) {
     );
 };
 
-$app->addMiddleware('auth', new App\Middleware\AuthMiddleware);
 
 $app->get('/', App\Controllers\HomeController::class . '@index');
-
-$app->use(['auth'], function () use ($app) {
-    $app->get('/users', App\Controllers\UserController::class . '@index');
-});
+$app->get('/users', App\Controllers\UserController::class . '@index');
+$app->post('/users', App\Controllers\UserController::class . '@store');
 
 
 $app->run();

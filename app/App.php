@@ -44,25 +44,6 @@ class App
         $this->container->router->map(['POST'], $pattern, $handler);
     }
 
-    public function addMiddleware(string $name, $instance)
-    {
-        $this->middlewares[$name] = $instance;
-    }
-
-
-    public function use(array $names, callable $callable)
-    {
-        foreach ($names as $key => $name) {
-            $response = $this->middlewares[$name]->handle($this->container->request, $this->container->response);
-
-            if ($response instanceof Response) {
-                $this->respond($response);
-                exit;
-            }
-        }
-
-        call_user_func($callable);
-    }
 
     public function run()
     {
@@ -88,7 +69,7 @@ class App
     protected function process($callable, Request $request, Response $response)
     {
         if (is_callable($callable)) {
-            call_user_func_array($callable, $params);
+            call_user_func($callable);
         } elseif (is_string($callable) && stripos($callable, '@') !== false) {
             list($controller, $method) = explode('@', $callable);
             return call_user_func_array([new $controller($this->container), $method], [$request, $response]);
